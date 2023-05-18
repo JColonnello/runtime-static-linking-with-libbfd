@@ -1,17 +1,20 @@
 TARGET = main test_unit.o
-LIBS = -liberty -lz -lbfd
+LIBS = -lbfd -lz -liberty
+# LIBS = -l:libiberty.a -l:libz.a -l:libbfd.a
 CC = gcc
 CFLAGS = -fPIE -g
 # -g -Wall
 
 .PHONY: default all clean
 
-default: $(TARGET)
+default: $(TARGET) test_unit
 all: default
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
+test_unit: test_unit.o
+	$(CC) --shared -static-libgcc -Wl,-Bstatic -lc $(CFLAGS) $^ -o $@
 
 main: main.o
 	$(CC) $(CFLAGS) $^ -o $@ $(LIBS) 
