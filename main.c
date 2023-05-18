@@ -103,10 +103,12 @@ int main(int argc, char **argv) {
 	// init libbfd
 	bfd_init();
 	
-    printf("loading test_unit.o.\n");
+	const char *filename = argc >= 2 ? argv[1] : "test_unit.o";
 	
+    printf("loading %s\n", filename);
+
 	// load test_unit.o object file
-	bfd *abfd = bfd_openr("test_unit.o", NULL);
+	bfd *abfd = bfd_openr(filename, NULL);
 
 	// no section info is loaded unless we call bfd_check_format!:
 	if (!bfd_check_format (abfd, bfd_object)) {
